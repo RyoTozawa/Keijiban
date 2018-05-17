@@ -3,33 +3,40 @@ include('module.php');
 
 $target_file = "index.txt";
 $PATH = $target_file;
+$angle_brace = "<>";
 
 touch($PATH);
 
-$angle_brace = "<>";
-
 if(isset($_POST["name"]) && isset($_POST["comment"]) && isset($_POST["status"])){
-    if($_POST["status"] == "editing"){
-        
+    $form_name = $_POST["name"];
+    $form_comment = $_POST["comment"];
+    $form_status = $_POST["status"];
+    if(strcmp($form_status, "editing")){
+        echo $form_status."</br>";
+        $body = edit_content($target_file, $value, $form_name, $form_comment);
+        file_put_contents($target_file, $body, LOCK_EX );
+    }else{
+        $comment_number = check_number($target_file);
+        $current_time = date("Y/m/d H:i:s");
+        $body = (string)$comment_number.
+        $angle_brace.$form_name.
+        $angle_brace.$form_comment.
+        $angle_brace.(string)$current_time."\n";
+        file_put_contents($target_file, $body, FILE_APPEND | LOCK_EX );
     }
-    $comment_number = check_number($target_file);
-    $current_time = date("Y/m/d H:i:s");
-    $body = (string)$comment_number.
-    $angle_brace.$_POST["name"].
-    $angle_brace.$_POST["comment"].
-    $angle_brace.(string)$current_time."\n";
-    file_put_contents($target_file, $body, FILE_APPEND | LOCK_EX );
 }
 
 if(isset($_POST["delete"])){
-    $new_body = delete_row($target_file, $_POST["delete"]);
+    $form_delete = $_POST["delete"];
+    $new_body = delete_row($target_file, $form_delete);
     file_put_contents($target_file, $new_body, LOCK_EX );
 }
 
 if(isset($_POST["edit"])){
-    if(check_edit($target_file, $_POST["edit"])){
-        $user = get_user($target_file, $_POST["edit"]);
-        $comment = get_comment($target_file, $_POST["edit"]);
+    $form_edit =  $_POST["edit"];
+    if(check_edit($target_file, $form_edit)){
+        $user = get_user($target_file, $form_edit);
+        $comment = get_comment($target_file, $form_edit);
     }
 }
 
@@ -51,7 +58,6 @@ if(isset($_POST["edit"])){
         <div class="name"><span class="label">名前：</span><input type = "text" name ="name" value="<?php echo $user;?>"></div><br/>
         <div class="comment"><span class="label">コメント：</span><textarea name ="comment" cols="30" rows="3" placeholder="50字以内で入力してください"><?php echo $comment;?></textarea></div><br/>
         <input type = "submit" value ="送信">
-        <input type="hidden" name="status" value="posting">
     </form>
 </section>
 

@@ -69,12 +69,11 @@ function delete_row($file_name, $delete_number){
 }
 
 function check_edit($file_name, $edit_number){
-    echo (string)$edit_number."を編集します </br>";
     $file = file($file_name);
     $count = count($file);
-    for($i=0 ; $i<$count ; $i++){
+    for($i=1 ; $i<$count+1 ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number-1 == (int)$array[0]){
+        if((int)$edit_number == (int)$array[0]-1){
             return TRUE;
         }
     }
