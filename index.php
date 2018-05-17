@@ -95,7 +95,9 @@ if(isset($form_name) && isset($form_comment)){
     $angle_brace.$form_name.
     $angle_brace.$form_comment.
     $angle_brace.(string)$current_time."\n";
-	file_put_contents($target_file, $body, FILE_APPEND | LOCK_EX );
+    file_put_contents($target_file, $body, FILE_APPEND | LOCK_EX );
+    unset($form_name);
+    unset($form_comment);
 }
 
 if(isset($form_delete)){
@@ -116,31 +118,42 @@ if(isset($form_edit)){
 <html lang = "ja">
 <head>
 <meta charset = "UTF-8">
+<link href="keijiban.css" rel="stylesheet" type="text/css" media="all">
 <title>簡易掲示板の作成</title>
 </head>
 <body>
+<h1>掲示板</h1>
 
-<h1>投稿フォーム</h1>
-<form action = "index.php" method = "post">
-名前：<input type = "text" name ="name" value="<?php echo $user;?>"><br/>
-コメント：<input type = "text" name ="comment" value="<?php echo $comment;?>"><br/>
-<input type = "submit" value ="送信">
-</form>
+<section>
+    <h5>投稿フォーム</h5>
+    <form action = "index.php" method = "post">
+        <div class="name"><span class="label">名前：</span><input type = "text" name ="name" value="<?php echo $user;?>"></div><br/>
+        <div class="comment"><span class="label">コメント：</span><textarea name ="comment" cols="30" rows="3" placeholder="50字以内で入力してください"><?php echo $comment;?></textarea></div><br/>
+        <input type = "submit" value ="送信">
+    </form>
+</section>
 
-<h1>消去フォーム</h1>
-<form action = "index.php" method = "post">
-消去番号：<input type = "text" name ="delete"><br>
-<input type = "submit" value ="送信">
-</form>
+<section class="toukou">
+    <h2>投稿一覧</h2>
+    <?php display_text($target_file); ?>
+</section>
 
-<h1>編集フォーム</h1>
-<form action = "index.php" method = "post">
-編集番号：<input type = "text" name ="edit"><br>
-<input type = "submit" value ="送信">
-<input type = "hidden" name = "edit" value = "edit_mode">
-</form>
+<section class="sonota">
+    <h5>消去フォーム</h5>
+    <form action = "index.php" method = "post">
+        <div class="delete"><span class="label">消去番号：</span><input type = "text" name ="delete"></div><br>
+        <input type = "submit" value ="送信">
+    </form>
+
+    <h5>編集フォーム</h5>
+    <form action = "index.php" method = "post">
+        <div class="edit"><span class="label">編集番号：</span><input type = "text" name ="edit"></div><br>
+        <input type = "submit" value ="送信">
+        <input type = "hidden" name = "edit" value = "edit_mode">
+    </form>
+</section>
+
 
 </body>
 </html>
 
-<?php display_text($target_file); ?>
