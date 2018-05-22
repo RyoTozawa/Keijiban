@@ -1,8 +1,8 @@
 <?php
 
 function check_number($file_name){
-    $count = count(file($file_name));
-    if($count==0){
+    $count = count(file($file_name, FILE_IGNORE_NEW_LINES));
+    if($count === 0){
         return 1;
     }else{
         return $count+1;
@@ -10,12 +10,13 @@ function check_number($file_name){
 }
 
 function get_user($file_name, $edit_number){
-    $file = file($file_name);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES);
     $count = count($file);
     $ans = NULL;
+    $edit = (int)$edit_number;
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number-1 == (int)$array[0]){
+        if($edit == $array[0]){
             $ans = $array[1];
             break;
         }
@@ -24,12 +25,13 @@ function get_user($file_name, $edit_number){
 }
 
 function get_comment($file_name, $edit_number){
-    $file = file($file_name);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES);
     $count = count($file);
+    $edit = (int)$edit_number;
     $ans = NULL;
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number-1 == (int)$array[0]){
+        if($edit === (int)$array[0]){
             $ans = $array[2];
             break;
         }
@@ -38,11 +40,12 @@ function get_comment($file_name, $edit_number){
 }
 
 function display_text($file_name){
-    if($file = file($file_name)){
-        $count = count($file);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $count = count($file);
+    if(!($count === 0)){
         for($i=0 ; $i < $count ; $i++){
             $array = explode('<>', trim($file[$i]));
-            if($array[0]!=NULL && $array[1]!=NULL && $array[2]!=NULL && $array[3]!=NULL){
+            if(isset($array[0]) and isset($array[1]) and isset($array[2]) and isset($array[3])){
                 echo "</br>";
                 echo "投稿番号：".$array[0]."</br>";
                 echo "投稿者：".$array[1]."</br>";
@@ -56,37 +59,25 @@ function display_text($file_name){
 }
 
 function delete_row($file_name, $delete_number){
-    $file = file($file_name);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES);
     $count = count($file);
     $body = "";
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)delete_number-1 != (int)$array[0]){
+        if((int)$delete_number-1 != (int)$array[0]){
             $body .= $file[$i]."\n";
         }    
     }
     return $body;
 }
 
-function check_edit($file_name, $edit_number){
-    $file = file($file_name);
-    $count = count($file);
-    for($i=1 ; $i<$count+1 ; $i++){
-        $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number == (int)$array[0]-1){
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
 function edit_content($file_name, $edit_number, $user, $comment){
-    $file = file($file_name);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES);
     $count = count($file);
     $body = "";
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number == (int)$array[0]){
+        if((int)$edit_number === (int)$array[0]){
             $file[$i][1] = $user;
             $file[$i][2] = $comment;
         }
