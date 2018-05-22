@@ -4,38 +4,38 @@ include('module.php');
 
 <?php
 $target_file = "index.txt";
+$buffer_file = "buffer.txt";
 $PATH = $target_file;
 $angle_brace = "<>";
-$edit = 0;
+
+$form_edit = $_POST["edit"];
+$form_status = $_POST["status"];
+$form_name = $_POST["name"];
+$form_comment = $_POST["comment"];
 
 touch($PATH);
+touch($buffer_file);
 
-if(isset($_POST["delete"])){
-    $form_delete = $_POST["delete"];
-    $new_body = delete_row($target_file, $form_delete);
-    file_put_contents($target_file, $new_body, LOCK_EX );
-} 
-
-if(isset($_POST["edit"]) and isset($_POST["status"])){
-    if($_POST["status"] == "EDIT"){
-        $user = get_user($target_file, $_POST["edit"]);
-        $comment = get_comment($target_file, $_POST["edit"]);
-        $edit = $_POST["status"];
+if(isset($form_edit) and isset($form_status)){
+    if($form_status == "EDIT"){
+        $user = get_user($target_file, $form_edit);
+        $comment = get_comment($target_file, $form_edit);
+        file_put_contents($buffer_file, $form_edit, LOCK_EX );
     }   
 }
 
-if(isset($_POST["name"]) and $_POST["comment"]){
-    echo "編集番号：".$edit."</br>";
-    $user = $_POST["name"];
-    $comment = $_POST["comment"];
-    if($edit != "0"){
-        $body = edit_content($target_file, $_POST["edit"], $user, $comment);
+if(isset($form_name) and isset($form_comment)){
+    $user = $form_name;
+    $comment = $form_comment;
+    if($edit = file($buffer_file, FILE_SKIP_EMPTY_LINES)){
+        echo "編集中 </br>";
+        echo $edit[0];
+        $body = edit_content($target_file, $edit[0], $_POST["name"], $_POST["comment"]);
+        echo $body;
         file_put_contents($target_file, $body, LOCK_EX );
-        $edit = "0";
-    }else if($edit == "0"){
-        $form_name = $_POST["name"];
-        $form_comment = $_POST["comment"];
-        echo "Normal </br>";
+        unlink($buffer_file);
+    }else{
+        echo "通常運行 </br>";
         $comment_number = check_number($target_file);
         $current_time = date("Y/m/d H:i:s");
         $body = (string)$comment_number.
@@ -46,7 +46,15 @@ if(isset($_POST["name"]) and $_POST["comment"]){
     }
 }
 
-$_POST = array();
+if(isset($_POST["delete"])){
+    $form_delete = $_POST["delete"];
+    $new_body = delete_row($target_file, $form_delete);
+    file_put_contents($target_file, $new_body, LOCK_EX );
+} 
+
+
+
+//$_POST = array();
 
 ?>
 

@@ -1,7 +1,7 @@
 <?php
 
 function check_number($file_name){
-    $count = count(file($file_name, FILE_IGNORE_NEW_LINES));
+    $count = count(file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
     if($count === 0){
         return 1;
     }else{
@@ -10,7 +10,7 @@ function check_number($file_name){
 }
 
 function get_user($file_name, $edit_number){
-    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     $ans = NULL;
     $edit = (int)$edit_number;
@@ -25,13 +25,13 @@ function get_user($file_name, $edit_number){
 }
 
 function get_comment($file_name, $edit_number){
-    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     $edit = (int)$edit_number;
     $ans = NULL;
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if($edit === (int)$array[0]){
+        if($edit == $array[0]){
             $ans = $array[2];
             break;
         }
@@ -40,7 +40,7 @@ function get_comment($file_name, $edit_number){
 }
 
 function display_text($file_name){
-    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     if(!($count === 0)){
         for($i=0 ; $i < $count ; $i++){
@@ -59,12 +59,13 @@ function display_text($file_name){
 }
 
 function delete_row($file_name, $delete_number){
-    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     $body = "";
+    $delete = (int)$delete_number;
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$delete_number-1 != (int)$array[0]){
+        if($delete != $array[0]){
             $body .= $file[$i]."\n";
         }    
     }
@@ -72,16 +73,23 @@ function delete_row($file_name, $delete_number){
 }
 
 function edit_content($file_name, $edit_number, $user, $comment){
-    $file = file($file_name, FILE_IGNORE_NEW_LINES);
+    $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     $body = "";
+    $edit = (int)$edit_number;
+    $angle_brace = "<>";
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if((int)$edit_number === (int)$array[0]){
-            $file[$i][1] = $user;
-            $file[$i][2] = $comment;
+        if($edit == $array[0]){
+            $current_time = date("Y/m/d H:i:s");
+            $buffer = (string)$edit.
+            $angle_brace.$user.
+            $angle_brace.$comment.
+            $angle_brace.(string)$current_time."\n";
+            $body .= $buffer;  
+        }else{
+            $body .= $file[$i]."\n";
         }
-        $body .= $file[$i]."\n";
     }
     return $body;
 }
