@@ -72,7 +72,7 @@ function delete_row($file_name, $delete_number){
     return $body;
 }
 
-function edit_content($file_name, $edit_number, $user, $comment){
+function edit_content($file_name, $edit_number, $user, $comment, $password){
     $file = file($file_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $count = count($file);
     $body = "";
@@ -80,12 +80,13 @@ function edit_content($file_name, $edit_number, $user, $comment){
     $angle_brace = "<>";
     for($i=0 ; $i < $count ; $i++){
         $array = explode('<>', trim($file[$i]));
-        if($edit == $array[0]){
+        if($edit == $array[0] and $password == $array[4]){
             $current_time = date("Y/m/d H:i:s");
             $buffer = (string)$edit.
             $angle_brace.$user.
             $angle_brace.$comment.
-            $angle_brace.(string)$current_time."\n";
+            $angle_brace.(string)$current_time.
+            $angle_brace.$password."\n";
             $body .= $buffer;  
         }else{
             $body .= $file[$i]."\n";
