@@ -8,20 +8,7 @@ body{
     margin-right: 5px;
 }
 
-.toukou{
-    box-sizing: border-box;
-    margin: 40px auto;
-    max-width: 975px;
-}
-
 .itiran{
-    border-top: 1px solid;
-    border-bottom: 1px solid;
     margin: 40px auto;
     max-width: 975px;
-}
-
-.delete{
-    border-top:solid;
-    border-bottom:solid;
 }

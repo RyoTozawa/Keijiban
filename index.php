@@ -1,5 +1,6 @@
 <?php
 include('module.php');
+include('mysql.php');
 ?>
 
 <?php
@@ -45,6 +46,7 @@ if(isset($form_name) and isset($form_comment)){
         $angle_brace.(string)$current_time.
         $angle_brace.$form_password."\n";
         file_put_contents($target_file, $body, FILE_APPEND | LOCK_EX ); 
+        insert_comment($comment_number,$form_name,$form_comment,$form_password);
     }
 }
 
