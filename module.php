@@ -46,11 +46,15 @@ function display_text($file_name){
         for($i=0 ; $i < $count ; $i++){
             $array = explode('<>', trim($file[$i]));
             if(isset($array[0]) and isset($array[1]) and isset($array[2]) and isset($array[3])){
+                $text = "</br>"."投稿番号：".$array[0]."</br>"."投稿者：".$array[1]."</br>"."コメント：".$array[2]."</br>"."投稿時間：".$array[3]."</br>";
+                //print($text);
+                /*
                 echo "</br>";
                 echo "投稿番号：".$array[0]."</br>";
                 echo "投稿者：".$array[1]."</br>";
                 echo "コメント：".$array[2]."</br>";
                 echo "投稿時間：".$array[3]."</br>";
+                */
             }
         }
     }else{
