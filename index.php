@@ -21,12 +21,14 @@ $count = count($file);
     <h2 align="center">ログ</h2>
     <?php foreach( $file as $row ):?>
     <?php $array = explode('<>', trim($row)); ?>
+    <div class="box">
     <p>
         <span><?php echo "投稿番号：".$array[0]."</br>" ?></span>
         <span><?php echo "投稿者：".$array[1]."</br>" ?></span>
         <span><?php echo "コメント：".$array[2]."</br>" ?></span>
         <span><?php echo "投稿時間：".$array[3]."</br>" ?></span>
     </p>
+    </div>
     <?php endforeach;?>
     <ul class="bg-bubbles">
         <li></li>
