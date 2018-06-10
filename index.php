@@ -10,6 +10,10 @@ $count = count($file);
 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.0.2/less.min.js" ></script>
 <div class="wrapper">
     <h1 align="center">掲示板</h1>
+    <form class="form">
+    <button type="submit" style="position: absolute; right: 0px; top: 5px;/">消去</button>
+    <button type="submit" style="position: absolute; right: 0px; top: 55px;/">編集</button>
+    </form>
     <div class="container">
         <h2 align="center">入力</h2>
         <form class="form" action="index.php" method="post">
