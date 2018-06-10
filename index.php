@@ -11,14 +11,14 @@ $count = count($file);
 <div class="wrapper">
     <h1 align="center">掲示板</h1>
     <div class="container">
+        <h2 align="center">入力</h2>
         <form class="form" action="index.php" method="post">
             <input type="text" placeholder="ユーザ名" value='<?php echo $user;?>'>
             <textarea name="comment" cols="30" rows="3" placeholder="50字以内"><?php echo $comment;?></textarea>
             <input type="password" placeholder="3文字以上">
             <button type="submit" id="login-button">投稿</button>
         </form>
-    </div>
-    <h1 align="center">ログ</h1>
+    <h2 align="center">ログ</h2>
     <?php foreach( $file as $row ):?>
     <?php $array = explode('<>', trim($row)); ?>
     <p>
@@ -40,5 +40,6 @@ $count = count($file);
         <li></li>
         <li></li>
     </ul>
+    </div>
 </div>
 </html>
