@@ -1,0 +1,14 @@
+body{
+    text-align: center;
+    font-family: Quicksand, 游ゴシック体, YuGothic, 'ヒラギノ角ゴシック Pro',メイリオ, Meiryo,'ＭＳ Ｐゴシック', sans-serif;
+}
+
+.label{
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.itiran{
+    margin: 40px auto;
+    max-width: 975px;
+}
