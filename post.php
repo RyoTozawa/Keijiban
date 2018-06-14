@@ -6,7 +6,6 @@
 $current_time = date("Y/m/d H:i:s");
 $form_status = "POST";
 
-
 if(isset($_POST["edit"]) and isset($_POST["mode"])){
     $comment = ORM::for_table('comment')->find_one((int)$_POST["edit"]);
     $form_name = $comment->user;
@@ -16,14 +15,14 @@ if(isset($_POST["edit"]) and isset($_POST["mode"])){
 ?>
 
 <?php
-    if(isset($_POST["name"]) and isset($_POST["comment"]) and isset($_POST["password"])){
-        $comment = ORM::for_table('comment')->create();
-        $comment->user = $_POST["name"];
-        $comment->comment = $_POST["comment"];
-        $comment->time = $current_time;
-        $comment->password = $_POST["password"];
-        $comment->save();
-    }
+if(isset($_POST["name"]) and isset($_POST["comment"]) and isset($_POST["password"])){
+    $comment = ORM::for_table('comment')->create();
+    $comment->user = $_POST["name"];
+    $comment->comment = $_POST["comment"];
+    $comment->time = $current_time;
+    $comment->password = $_POST["password"];
+    $comment->save();
+}
 ?>
 
 <script>
