@@ -17,6 +17,9 @@ PHP/JS/HTML/CSSで書いています。
 ## Install
 MAMP上のhtdocsにて動作しています。
 Apache / MySQL / PHP
+
+## Document
+[Specification](document/仕様書.md)
 ## Contribution
 
 ## Licence
